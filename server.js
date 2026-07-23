@@ -311,7 +311,7 @@ app.delete("/api/participants/:id", (req, res) => {
 // Server
 // ======================================
 
-cconst PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
 
