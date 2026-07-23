@@ -311,9 +311,9 @@ app.delete("/api/participants/:id", (req, res) => {
 // Server
 // ======================================
 
-const PORT = 3000;
+cconst PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
 
     console.log("==================================");
     console.log("Database connected.");
