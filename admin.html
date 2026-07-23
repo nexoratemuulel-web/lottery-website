@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ самбар</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+input,textarea,select,button{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+}
+
+button{
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table,th,td{
+    border:1px solid #ccc;
+}
+
+th,td{
+    padding:10px;
+    text-align:center;
+}
+
+.deleteBtn{
+    background:red;
+    color:white;
+    border:none;
+    padding:8px;
+    cursor:pointer;
+}
+
+hr{
+    margin:40px 0;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>Админ самбар</h1>
+<button onclick="logout()">
+    🚪 Гарах
+</button>
+
+<h2>🚗 Машин нэмэх</h2>
+
+<form id="carForm">
+
+<input type="text" id="name" placeholder="Машины нэр" required>
+
+<input type="text" id="model" placeholder="Загвар" required>
+
+<input type="text" id="image" placeholder="Зургийн URL">
+
+<textarea id="description" placeholder="Тайлбар"></textarea>
+
+<button type="submit">
+Машин хадгалах
+</button>
+
+</form>
+
+<hr>
+
+<h2>📋 Машины жагсаалт</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Нэр</th>
+<th>Загвар</th>
+<th>Устгах</th>
+
+</tr>
+
+</thead>
+
+<tbody id="carTable">
+
+</tbody>
+
+</table>
+
+<hr>
+
+<h2>👤 Оролцогч бүртгэх</h2>
+
+<form id="participantForm">
+
+<input
+type="text"
+id="phone"
+placeholder="Утасны дугаар"
+required>
+
+<select id="carSelect">
+
+<option value="">
+Машин сонгох
+</option>
+
+</select>
+
+<button type="submit">
+Оролцогч бүртгэх
+</button>
+
+</form>
+<hr>
+
+<h2>📋 Оролцогчдын жагсаалт</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Утас</th>
+<th>Машин</th>
+<th>Загвар</th>
+<th>Устгах</th>
+</tr>
+</thead>
+
+<tbody id="participantTable">
+</tbody>
+
+</table>
+
+<script>
+
+if(localStorage.getItem("admin") !== "true"){
+
+    window.location.href = "/admin";
+
+}
+
+// =====================
+// Машинуудыг ачаалах
+// =====================
+
+
+async function loadCars(){
+
+    const res = await fetch("/api/cars");
+    const cars = await res.json();
+
+    const select = document.getElementById("carSelect");
+    const table = document.getElementById("carTable");
+
+    select.innerHTML = "<option value=''>Машин сонгох</option>";
+    table.innerHTML = "";
+
+    cars.forEach(car=>{
+
+        select.innerHTML += `
+        <option value="${car.id}">
+            ${car.name} (${car.model})
+        </option>
+        `;
+
+        table.innerHTML += `
+        <tr>
+            <td>${car.id}</td>
+            <td>${car.name}</td>
+            <td>${car.model}</td>
+            <td>
+                <button
+                    class="deleteBtn"
+                    onclick="deleteCar(${car.id})">
+                    🗑️ Устгах
+                </button>
+            </td>
+        </tr>
+        `;
+
+    });
+
+}
+
+loadCars();
+
+// =====================
+// Машин хадгалах
+// =====================
+
+document.getElementById("carForm").addEventListener("submit", async (e)=>{
+
+    e.preventDefault();
+
+    const car = {
+
+        name: document.getElementById("name").value,
+        model: document.getElementById("model").value,
+        image: document.getElementById("image").value,
+        description: document.getElementById("description").value
+
+    };
+
+    const res = await fetch("/api/cars",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(car)
+
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    if(data.success){
+
+        document.getElementById("carForm").reset();
+
+        loadCars();
+
+    }
+
+});
+
+// =====================
+// Машин устгах
+// =====================
+
+async function deleteCar(id){
+
+    if(!confirm("Энэ машиныг устгах уу?")) return;
+
+    const res = await fetch("/api/cars/" + id,{
+
+        method:"DELETE"
+
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    loadCars();
+
+}
+
+// =====================
+// Гарах
+// =====================
+
+function logout(){
+
+    localStorage.removeItem("admin");
+
+    window.location.href = "/admin";
+
+}
+
+// =====================
+// Оролцогч бүртгэх
+// =====================
+
+document.getElementById("participantForm").addEventListener("submit", async (e)=>{
+
+    e.preventDefault();
+
+    const participant = {
+
+        phone: document.getElementById("phone").value,
+
+        car_id: document.getElementById("carSelect").value
+
+    };
+
+    const res = await fetch("/api/participants",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(participant)
+
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    if(data.success){
+
+    document.getElementById("participantForm").reset();
+
+    loadParticipants();
+
+}
+
+});
+// =====================
+// Оролцогчдын жагсаалт
+// =====================
+
+async function loadParticipants(){
+
+    const res = await fetch("/api/participants");
+    const participants = await res.json();
+
+    const table = document.getElementById("participantTable");
+
+    table.innerHTML = "";
+
+    participants.forEach(p => {
+
+       table.innerHTML += `
+<tr>
+    <td>${p.id}</td>
+    <td>${p.phone}</td>
+    <td>${p.name}</td>
+    <td>${p.model}</td>
+    <td>
+        <button class="deleteBtn" onclick="deleteParticipant(${p.id})">
+            🗑️ Устгах
+        </button>
+    </td>
+</tr>
+`;
+
+    });
+
+}
+
+loadParticipants();
+async function deleteParticipant(id){
+
+    if(!confirm("Энэ оролцогчийг устгах уу?")) return;
+
+    const res = await fetch("/api/participants/" + id,{
+        method:"DELETE"
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    loadParticipants();
+
+}
+
+</script>
+
+</body>
+</html>

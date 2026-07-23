@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXORA PARTNERS</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.65),
+                    rgba(0, 0, 0, 0.75)
+                ),
+
+                url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=90");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* HEADER */
+
+        header {
+            width: 100%;
+            padding: 25px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .admin {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+
+        main {
+            min-height: calc(100vh - 90px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+        .card {
+
+            width: 100%;
+            max-width: 500px;
+
+            padding: 45px 35px;
+
+            text-align: center;
+
+            background: rgba(15, 23, 42, 0.75);
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            border-radius: 25px;
+
+            backdrop-filter: blur(20px);
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.5);
+        }
+
+        .icon {
+            font-size: 55px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* INPUT */
+
+        input {
+
+            width: 100%;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(255,255,255,0.25);
+
+            background: rgba(255,255,255,0.1);
+
+            color: white;
+
+            font-size: 17px;
+
+            outline: none;
+
+            text-align: center;
+
+            margin-bottom: 15px;
+        }
+
+        input::placeholder {
+            color: #cbd5e1;
+        }
+
+        input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56,189,248,0.3);
+        }
+
+        /* BUTTON */
+
+        button {
+
+            width: 100%;
+
+            padding: 17px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #0ea5e9,
+                #2563eb
+            );
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 30px rgba(37,99,235,0.5);
+        }
+
+        /* RESULT */
+
+        #result {
+
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            background: rgba(255,255,255,0.1);
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            text-align: left;
+        }
+
+        #result h3 {
+
+            color: #38bdf8;
+
+            margin-bottom: 15px;
+        }
+
+        #result p {
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* FOOTER */
+
+        footer {
+
+            position: fixed;
+
+            bottom: 15px;
+
+            width: 100%;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .admin {
+                display: none;
+            }
+
+            .card {
+                padding: 35px 22px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            NEXORA <span>PARTNERS</span>
+        </div>
+
+        <div class="admin">
+            🚗 Машины сугалааны систем
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <div class="card">
+
+            <div class="icon">
+                🎟️
+            </div>
+
+            <h1>
+                Сугалааны эрхээ шалгах
+            </h1>
+
+            <p class="description">
+                Та өөрийн утасны дугаараа оруулж,
+                аль автомашины сугалаанд оролцож байгаагаа
+                шалгана уу.
+            </p>
+
+            <input
+                type="text"
+                id="phone"
+                placeholder="Утасны дугаар"
+            >
+
+            <button onclick="checkPhone()">
+                ШАЛГАХ
+            </button>
+
+
+            <div id="result">
+
+                <h3>
+                    Таны мэдээлэл
+                </h3>
+
+                <p>
+                    📱 Утас: 99112233
+                </p>
+
+                <p>
+                    🚗 Машин: Toyota Prius
+                </p>
+
+                <p>
+                    🎟️ Сугалааны эрх: 3
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        © 2026 NEXORA PARTNERS
+
+    </footer>
+
+
+    <script>
+async function checkPhone() {
+
+    const phone = document.getElementById("phone").value.trim();
+
+    if (phone === "") {
+        alert("Утасны дугаараа оруулна уу!");
+        return;
+    }
+
+    try {
+
+        const res = await fetch("/api/check/" + phone);
+        const data = await res.json();
+
+        const result = document.getElementById("result");
+
+        if (!data.success) {
+            alert(data.message);
+            result.style.display = "none";
+            return;
+        }
+
+        result.innerHTML = `
+            <h3>Таны мэдээлэл</h3>
+
+            <p>📱 <b>Утас:</b> ${data.data.phone}</p>
+
+            <p>🚗 <b>Машин:</b> ${data.data.name}</p>
+
+            <p>📌 <b>Загвар:</b> ${data.data.model}</p>
+
+            <p>${data.data.description}</p>
+
+            <img src="${data.data.image}" style="width:100%;margin-top:15px;border-radius:10px;">
+        `;
+
+        result.style.display = "block";
+
+    } catch (err) {
+
+        alert("Сервертэй холбогдож чадсангүй.");
+        console.error(err);
+
+    }
+
+}
+
+    </script>
+
+</body>
+
+</html>
